@@ -11,11 +11,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-        ),
-        home: Text('Lets build me')
+        debugShowCheckedModeBanner: false,
+        title: 'Instagram',
+        theme: ThemeData.dark()
+        //   colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        // ),
+        ,home: Scaffold(body: Text('Lets build Instagram'))
     );
   }
 }
