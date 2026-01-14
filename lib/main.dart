@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram/utils/color.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,10 +14,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Instagram',
-        theme: ThemeData.dark()
-        //   colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-        // ),
-        ,home: Scaffold(body: Text('Lets build Instagram'))
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: mobileBackgroundColor
+        ),
+        home: Scaffold(body: Text('Lets build Instagram'))
     );
   }
 }
