@@ -1,3 +1,4 @@
+//lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:instagram/responsive/mobile_screen_layout.dart';
 import 'package:instagram/responsive/responsive_layout_screen.dart';
