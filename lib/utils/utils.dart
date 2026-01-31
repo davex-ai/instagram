@@ -1,6 +1,6 @@
-
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 pickImage(ImageSource source) async {
@@ -12,4 +12,10 @@ pickImage(ImageSource source) async {
     return await _file.readAsBytes();
   }
   print("Missing image");
+}
+
+showSnackBar(String content, BuildContext context){
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text(content))
+  );
 }

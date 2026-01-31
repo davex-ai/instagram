@@ -38,6 +38,16 @@ class _SignUpState extends State<SignUp> {
   _image = im;
     });
   }
+
+  void signUpUser() async {
+    String response = await Authentication()
+        .signUpUser(email: _emailController.text, password: _passwordController.text,
+        username: _usernameController.text, bio: _bioController.text, file: _image!);
+    if (response != 'Successfully registered'){
+      showSnackBar(response, context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,8 +84,7 @@ class _SignUpState extends State<SignUp> {
                   TextInput(textEditingController: _bioController, hintText: "Enter your bio", textInputType: TextInputType.text),
                   const SizedBox(height: 24,),
                   InkWell(
-                    onTap: () async {
-                      String response = await Authentication().signUpUser(email: _emailController.text, password: _passwordController.text, username: _usernameController.text, bio: _bioController.text, file: _image!);},
+                    onTap: signUpUser,
                     child: Container(
                       child: const Text("Sign Up"),
                       width: double.infinity,

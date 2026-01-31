@@ -35,7 +35,13 @@ class Authentication {
         });
         res = "Successfully registered";
       }
-    } catch(err) {
+    } on FirebaseAuthException catch (err){
+      if (err.code == "invalid-email"){
+        res = "Invalid Email";
+      } else if(err.code == "weak-password")
+        res = "Weak Password";
+    }
+    catch(err) {
       res = err.toString();
     }
     return res;
