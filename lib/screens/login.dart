@@ -34,9 +34,9 @@ class _LoginState extends State<Login> {
                 SvgPicture.asset("assets/ic_instagram.svg", color : primaryColor, height: 64,),
                 const SizedBox(height: 64,),
                 TextInput(textEditingController: _emailController, hintText: "Enter your email", textInputType: TextInputType.emailAddress),
-                const SizedBox(height: 34,),
+                const SizedBox(height: 24,),
                 TextInput(textEditingController: _passwordController, hintText: "Enter your password", textInputType: TextInputType.text, isPass: true),
-                const SizedBox(height: 34,),
+                const SizedBox(height: 24,),
                 InkWell(
                   child: Container(
                   child: const Text("Log In"),
