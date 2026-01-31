@@ -22,6 +22,7 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   Uint8List? _image;
+  bool _loaded = false;
 
   @override
   void dispose() {
@@ -40,9 +41,15 @@ class _SignUpState extends State<SignUp> {
   }
 
   void signUpUser() async {
+    setState(() {
+      _loaded = true;
+    });
     String response = await Authentication()
         .signUpUser(email: _emailController.text, password: _passwordController.text,
         username: _usernameController.text, bio: _bioController.text, file: _image!);
+    setState(() {
+      _loaded = false;
+    });
     if (response != 'Successfully registered'){
       showSnackBar(response, context);
     }
@@ -86,7 +93,10 @@ class _SignUpState extends State<SignUp> {
                   InkWell(
                     onTap: signUpUser,
                     child: Container(
-                      child: const Text("Sign Up"),
+                      child: _loaded
+                          ? const Center(
+                        child: CircularProgressIndicator( color: primaryColor,),
+                      )   : const Text("Sign Up"),
                       width: double.infinity,
                       alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(vertical: 12),
