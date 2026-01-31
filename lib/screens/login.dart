@@ -38,6 +38,7 @@ class _LoginState extends State<Login> {
                 TextInput(textEditingController: _passwordController, hintText: "Enter your password", textInputType: TextInputType.text, isPass: true),
                 const SizedBox(height: 24,),
                 InkWell(
+                  onTap: () {},
                   child: Container(
                   child: const Text("Log In"),
                   width: double.infinity,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import "package:flutter_svg/flutter_svg.dart";
+import "package:instagram/logic/authentication.dart";
 import "package:instagram/utils/color.dart";
 import "package:instagram/widget/text_input.dart";
 
@@ -25,6 +26,10 @@ class _SignUpState extends State<SignUp> {
     _bioController.dispose();
     _usernameController.dispose();
   }
+
+  void selectImage() {
+    
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +49,7 @@ class _SignUpState extends State<SignUp> {
                         radius: 64,
                         backgroundImage: NetworkImage(" "),
                       ),
-                      Positioned(bottom: -10, left: 80, child: IconButton(onPressed: () {}, icon: const Icon( Icons.add_a_photo)))
+                      Positioned(bottom: -10, left: 80, child: IconButton(onPressed: selectImage, icon: const Icon( Icons.add_a_photo)))
                     ],
                   ),
                   const SizedBox(height: 24,),
@@ -57,8 +62,10 @@ class _SignUpState extends State<SignUp> {
                   TextInput(textEditingController: _bioController, hintText: "Enter your bio", textInputType: TextInputType.text),
                   const SizedBox(height: 24,),
                   InkWell(
+                    onTap: () async {
+                      String response = await Authentication().signUpUser(email: _emailController.text, password: _passwordController.text, username: _usernameController.text, bio: _bioController.text, file: );},
                     child: Container(
-                      child: const Text("Log In"),
+                      child: const Text("Sign Up"),
                       width: double.infinity,
                       alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(vertical: 12),
