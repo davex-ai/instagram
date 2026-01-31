@@ -75,7 +75,7 @@ class _SignUpState extends State<SignUp> {
                   const SizedBox(height: 24,),
                   InkWell(
                     onTap: () async {
-                      String response = await Authentication().signUpUser(email: _emailController.text, password: _passwordController.text, username: _usernameController.text, bio: _bioController.text, file: );},
+                      String response = await Authentication().signUpUser(email: _emailController.text, password: _passwordController.text, username: _usernameController.text, bio: _bioController.text, file: _image!);},
                     child: Container(
                       child: const Text("Sign Up"),
                       width: double.infinity,

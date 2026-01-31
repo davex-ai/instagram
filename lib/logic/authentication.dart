@@ -1,9 +1,12 @@
 
-import 'dart:nativewrappers/_internal/vm/lib/typed_data_patch.dart';
+
+
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram/logic/storage.dart';
 
 class Authentication {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -20,13 +23,15 @@ class Authentication {
     try {
       if (email.isNotEmpty || password.isNotEmpty || bio.isNotEmpty || file != null){
         UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+        String photoURL = await Storage().uploadImageToStorage("profilePics", file, false);
         await _firestore.collection("users").doc(userCredential.user!.uid).set({
           'username' : username,
           'uid': userCredential.user!.uid,
           'email': email,
           'bio': bio,
           'followers': [],
-          'following': []
+          'following': [],
+          'photoURL': photoURL
         });
         res = "Successfully registered";
       }
