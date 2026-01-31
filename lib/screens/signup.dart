@@ -1,7 +1,11 @@
+import "dart:typed_data";
+
 import 'package:flutter/material.dart';
 import "package:flutter_svg/flutter_svg.dart";
+import "package:image_picker/image_picker.dart";
 import "package:instagram/logic/authentication.dart";
 import "package:instagram/utils/color.dart";
+import "package:instagram/utils/utils.dart";
 import "package:instagram/widget/text_input.dart";
 
 
@@ -17,6 +21,7 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
+  Uint8List? _image;
 
   @override
   void dispose() {
@@ -27,8 +32,11 @@ class _SignUpState extends State<SignUp> {
     _usernameController.dispose();
   }
 
-  void selectImage() {
-    
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    setState(() {
+  _image = im;
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -45,9 +53,13 @@ class _SignUpState extends State<SignUp> {
                   const SizedBox(height: 64,),
                   Stack(
                     children: [
-                      CircleAvatar(
+                      _image != null ? CircleAvatar(
                         radius: 64,
-                        backgroundImage: NetworkImage(" "),
+                        backgroundImage: MemoryImage(_image!),
+                      ):
+                      const CircleAvatar(
+                        radius: 64,
+                        backgroundImage: NetworkImage("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJQAmgMBIgACEQEDEQH/xAAbAAEBAAMBAQEAAAAAAAAAAAAABgEEBQMCB//EADoQAAICAQICBAsGBgMAAAAAAAABAgMEBREhMRJBUXEGEyIyUmGRkqHB0RQVI0Kx8FRygaLh8UNic//EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A/cAAAAAAAAADzvvrx6nZdJRiutgegJ/K16cm1i1qK9KfF+w1HrGc3v45LuigKsE1RruTB/jRhZHu2Z28LOpzIb1NqS5wlzQG0AAAAAAAAAAAAAAAAAADaS3fBIktUzXm5Dab8VHhCPzO9rdzp06xxezn5C/qSgAAFQPTHunj3Rtqe04/E8wBaYeRHKxoXQ5SXFdj7D2OF4NWv8ah8uEl8/kd0igAAAAAAAAAAAAAAAOR4S7/AGOr/wBPkycKjX6/GafJpbuuSl+/aS5QAAQAAHU8Hd/t77HW/wBUUxP+DNe9t1vUoqKff/ooCKAAAAAAAAAAAAAAAA+bIRshKElvGS2ZHZmNPEyJUz6uT7V1MszWz8KrNq6FqakvNkuaAjgb+TpGXQ30a/Gw6nXxfsNR0XJ7OmxPscGVHmZinKSjFbtvZJdZs0admXvyKJxXbNdFfE72maVDDfjLGp3du3Bd31Ir30zEWJiRr/Pzm/WbYAAAAAAAAAAAAAAAB55F9ePU7LpKMUT2drd9rccb8KHb+Z/QCguyKaFvdZGH8zNOzWsGD26cpfywZLSblJyk25PrfMwBT/fuH2W+6vqY+/cPsu91fUmgBTLXcN/lt91fUzHXMJvi7I98CX4mQLGjPxb3tVfByfKLez9jNkherY3cPU8nFa6M+nX6E/3wArQaeBqNGatoPo2bcYPmbgAAAAAAAAA+LrYUVTtse0Irds+zi+EtzjVTSn57cpbeoDkZ+ZZm3uc+EU/Ij1RX1NYAqAAAAAAAAAAA+oTlXNThJxlHimuoqtKzvttHlbK2HCaX6kmb+h2urUa1v5M04v5fEiqsAAAAAAAAmfCKfSz4x6owXxKYktal0tUyPU0v7UBpAAqAAAAAAAAAAAHriz8Xk0z9GafxPIPk9uwC6BiL6UU+1bmSKAAAAABJawttTyN+1foitONrmm2XyWRjrpTS2lDrfrAngZfBtPmjBUAAAAAAAAAAAMS5MydDScCeVdGcltTF7uXpepAVEFtBJ80kj6CBFAAAAAAAAauXp+Nl8ba/K9KPBnIyPB+2Lbx7YyXZPgyhAEfbp2ZT52PNrtiukvga0oyi9pRafrWxcmHFS85J96AhufIyWc8TGn5+PTLvgj4+78L+Fp9xFEeYLH7vwv4Wn3EfcMXHh5lFUe6CAjoVWWPauuc3/wBYtm5RpGbb/wAXi12zexVJJcFw7jJBycTQqa2pZEnbLs5R/wAnUjFQioxSUVwSXJH0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Z"),
                       ),
                       Positioned(bottom: -10, left: 80, child: IconButton(onPressed: selectImage, icon: const Icon( Icons.add_a_photo)))
                     ],
