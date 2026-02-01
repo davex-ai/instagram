@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/logic/firestoreMethods.dart';
 import 'package:instagram/providers/user.dart';
+import 'package:instagram/screens/comment.dart';
 import 'package:instagram/utils/color.dart';
 import 'package:instagram/widget/like_animation.dart';
 import 'package:intl/intl.dart';
@@ -143,7 +144,7 @@ class _PostCardState extends State<PostCard> {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => Comment())),
                 icon: const Icon(Icons.comment_outlined),
               ),
               IconButton(onPressed: () {}, icon: const Icon(Icons.send)),
