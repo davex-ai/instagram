@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/utils/color.dart';
+import 'package:intl/intl.dart';
 
 class PostCard extends StatelessWidget {
-  const PostCard({super.key});
+  final snap;
+  const PostCard({super.key, required this.snap});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,10 @@ class PostCard extends StatelessWidget {
             ).copyWith(right: 0),
             child: Row(
               children: [
-                CircleAvatar(radius: 16, backgroundImage: NetworkImage('url')),
+                CircleAvatar(
+                  radius: 16,
+                  backgroundImage: NetworkImage(snap['profileImage']),
+                ),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8),
@@ -27,7 +32,7 @@ class PostCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'username',
+                          snap['username'],
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -68,7 +73,7 @@ class PostCard extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
-            child: Image.network('src', fit: BoxFit.cover),
+            child: Image.network(snap['postUrl'], fit: BoxFit.cover),
           ),
           Row(
             children: [
@@ -103,42 +108,45 @@ class PostCard extends StatelessWidget {
                     context,
                   ).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w800),
                   child: Text(
-                    '1 likes',
+                    '${snap['likes'].length} likes',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.only(
-                    top: 8
+                  padding: const EdgeInsets.only(top: 8),
+                  child: RichText(
+                    text: TextSpan(
+                      style: const TextStyle(color: primaryColor),
+                      children: [
+                        TextSpan(
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(text: '${snap['description']}'),
+                      ],
+                    ),
                   ),
-                  child: RichText(text: TextSpan(
-                    style: const TextStyle(color: primaryColor),
-                    children: [
-                      TextSpan(
-                        text: 'username',
-                            style: const TextStyle(fontWeight: FontWeight.bold)
-                      ),
-                      TextSpan(
-                        text: 'replace desc'
-                      ),
-                    ]
-                  )),
                 ),
                 InkWell(
                   onTap: () {},
                   child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Text(
-                    'View all comm', style: const TextStyle(fontSize: 16, color: secondaryColor),
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Text(
+                      'View all comm',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: secondaryColor,
+                      ),
+                    ),
                   ),
-                )),
+                ),
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Text(
-                    'View all comm', style: const TextStyle(fontSize: 16, color: secondaryColor),
+                    DateFormat.yMMMd().format(snap['datePublished'].toDate()),
+                    style: const TextStyle(fontSize: 16, color: secondaryColor),
                   ),
-                )
+                ),
               ],
             ),
           ),
