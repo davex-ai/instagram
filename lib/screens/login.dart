@@ -1,6 +1,10 @@
 import "package:flutter/material.dart";
 import "package:flutter_svg/flutter_svg.dart";
 import "package:instagram/logic/authentication.dart";
+import "package:instagram/responsive/mobile_screen_layout.dart";
+import "package:instagram/responsive/responsive_layout_screen.dart";
+import "package:instagram/responsive/web_screen_layout.dart";
+import "package:instagram/screens/signup.dart";
 import "package:instagram/utils/color.dart";
 import "package:instagram/utils/utils.dart";
 import "package:instagram/widget/text_input.dart";
@@ -25,13 +29,21 @@ class _LoginState extends State<Login> {
     _passwordController.dispose();
   }
 
+  void ToSignUpScreen() async {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUp()));
+  }
+  
   void loginUser() async {
     setState(() {
       _loaded = true;
     });
     String response = await Authentication().loginUser(email: _emailController.text, password: _passwordController.text);
     if(response == "Successfully logged In"){
-
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const ResponsiveLayout(
+              webScreenLayout: WebScreenLayout(),
+              mobileScreenLayout: MobileScreenLayout()
+          )));
     } else {
       showSnackBar(response, context);
     }
@@ -84,7 +96,7 @@ class _LoginState extends State<Login> {
                     padding: const EdgeInsets.symmetric(vertical: 8),
                   ),
                     GestureDetector(
-                      onTap: (){},
+                      onTap: ToSignUpScreen,
                       child: Container(
                       child: const Text("Sign Up", style: TextStyle(fontWeight: FontWeight.bold),
                     ), padding: const EdgeInsets.symmetric(vertical: 8),
