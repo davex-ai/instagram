@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/logic/firestoreMethods.dart';
 import 'package:instagram/models/user.dart';
@@ -15,6 +16,14 @@ class Comment extends StatefulWidget {
 }
 
 class _CommentState extends State<Comment> {
+  final TextEditingController _commentControl = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _commentControl.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final User user = Provider.of<UserProvider>(context).getUser;
@@ -24,7 +33,26 @@ class _CommentState extends State<Comment> {
         title: const Text('Comment'),
         centerTitle: false,
       ),
-      body: CommentCard(),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('posts')
+            .doc(widget.snap['postId'])
+            .collection('comments')
+            .orderBy('datePublished', descending: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          return ListView.builder(
+            itemCount: (snapshot.data! as dynamic).docs.length,
+            itemBuilder: (context, index) => CommentCard(
+              snap: (snapshot.data! as dynamic).doc[index].data(),
+            ),
+          );
+        },
+      ),
       bottomNavigationBar: SafeArea(
         child: Container(
           height: kToolbarHeight,
@@ -42,6 +70,7 @@ class _CommentState extends State<Comment> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16, right: 8),
                   child: TextField(
+                    controller: _commentControl,
                     decoration: InputDecoration(
                       hintText: 'Comment as ${user.username}',
                       border: InputBorder.none,
@@ -53,11 +82,14 @@ class _CommentState extends State<Comment> {
                 onTap: () async {
                   await Firestoremethods().postComment(
                     widget.snap['postId'],
-                    widget.snap['text'],
+                    _commentControl.text,
                     user.uid,
                     user.username,
                     user.photoURL,
                   );
+                  setState(() {
+                    _commentControl.text = '';
+                  });
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(
