@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram/logic/firestoreMethods.dart';
 import 'package:instagram/providers/user.dart';
 import 'package:instagram/utils/color.dart';
 import 'package:instagram/widget/like_animation.dart';
@@ -83,46 +84,62 @@ class _PostCardState extends State<PostCard> {
             ),
           ),
           GestureDetector(
-            onDoubleTap: () {
+            onDoubleTap: () async {
+              await Firestoremethods().likePost(
+                widget.snap['postId'],
+                user.uid,
+                widget.snap['likes'],
+              );
               setState(() {
-                isAnimating =true;
+                isAnimating = true;
               });
             },
             child: Stack(
               alignment: Alignment.center,
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.35,
-                width: double.infinity,
-                child: Image.network(widget.snap['postUrl'], fit: BoxFit.cover),
-              ),
-              AnimatedOpacity(
-                  duration: const Duration(milliseconds: 200) ,
-              opacity: isAnimating? 1: 0,
-              child: LikeAnimation(
-                child: const Icon(
-                  Icons.favorite,
-                  color: Colors.white,
-                  size: 120,
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.35,
+                  width: double.infinity,
+                  child: Image.network(
+                    widget.snap['postUrl'],
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                isAnimating: isAnimating,
-                duration: const Duration( milliseconds: 400),
-                onEnd: () {
-                    setState(() {
-                      isAnimating = false;
-                    });
-                },
-              )),
-            ],
-          )),
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: isAnimating ? 1 : 0,
+                  child: LikeAnimation(
+                    child: const Icon(
+                      Icons.favorite,
+                      color: Colors.white,
+                      size: 120,
+                    ),
+                    isAnimating: isAnimating,
+                    duration: const Duration(milliseconds: 400),
+                    onEnd: () {
+                      setState(() {
+                        isAnimating = false;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
           Row(
             children: [
               LikeAnimation(
                 isAnimating: widget.snap['likes'].contains(user.uid),
                 smallLike: true,
                 child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.favorite, color: Colors.red),
+                  onPressed: () async {
+                    await Firestoremethods().likePost(
+                      widget.snap['postId'],
+                      user.uid,
+                      widget.snap['likes'],
+                    );
+                  },
+                  icon: widget.snap['likes'].contains(user.uid) ? const Icon(Icons.favorite, color: Colors.red):const Icon(Icons.favorite_border)
                 ),
               ),
               IconButton(
@@ -187,7 +204,9 @@ class _PostCardState extends State<PostCard> {
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Text(
-                    DateFormat.yMMMd().format(widget.snap['datePublished'].toDate()),
+                    DateFormat.yMMMd().format(
+                      widget.snap['datePublished'].toDate(),
+                    ),
                     style: const TextStyle(fontSize: 16, color: secondaryColor),
                   ),
                 ),
