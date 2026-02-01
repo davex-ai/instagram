@@ -40,7 +40,7 @@ class _LoginState extends State<Login> {
     String response = await Authentication().loginUser(email: _emailController.text, password: _passwordController.text);
     if(response == "Successfully logged In"){
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const ResponsiveLayout(
+          MaterialPageRoute(builder: (context) => const ResponsiveLayoutScreen(
               webScreenLayout: WebScreenLayout(),
               mobileScreenLayout: MobileScreenLayout()
           )));

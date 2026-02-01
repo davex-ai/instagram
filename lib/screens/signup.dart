@@ -58,7 +58,7 @@ class _SignUpState extends State<SignUp> {
       showSnackBar(response, context);
     } else {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const ResponsiveLayout(
+          MaterialPageRoute(builder: (context) => const ResponsiveLayoutScreen(
           webScreenLayout: WebScreenLayout(),
           mobileScreenLayout: MobileScreenLayout()
       )));
