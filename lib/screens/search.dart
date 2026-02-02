@@ -79,7 +79,7 @@ class _SearchState extends State<Search> {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                return StaggeredGridView.countBuilder(
+                return StaggeredGridView.countBuilder( //Undefined name 'StaggeredGridView'.
                   crosssAxisCount: 3,
                   itemCount: (snapshot.data! as dynamic).docs.lenght,
                   itemBuilder: (context, index) => Image.network(

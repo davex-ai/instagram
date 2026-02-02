@@ -143,6 +143,31 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 const Divider(),
+                FutureBuilder(
+                  future: FirebaseFirestore.instance
+                      .collection('posts')
+                      .where('uid', isEqualTo: widget.uid)
+                      .get(),
+                  builder: (context, snap) {
+                    if (snap.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    return GridView(
+                      shrinkWrap: true,
+                      itemCount: (snap.data! as dynamic).docs.length,
+                      gridDelegate: const SilverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 5,
+                          mainAxisSpacing: 1.5,
+                          childAspectRatio: 1),
+                    itemBuilder: (context, index) {
+                        DocumentSnapshot snapshot = (snap.data! as dynamic).docs[index];
+                        return Container(
+                          child: Image(image: NetworkImage(snapshot['postUrl']), fit: BoxFit.cover,),
+                        )
+                    })
+                  },
+                ),
               ],
             ),
           );
