@@ -104,7 +104,7 @@ class _ProfileState extends State<Profile> {
                                             backgroundColor:
                                                 mobileBackgroundColor,
                                             borderColor: primaryColor,
-                                            text: 'Edit Profile',
+                                            text: 'Log Out',
                                             textColor: Colors.grey,
                                           )
                                         : isFollowing
