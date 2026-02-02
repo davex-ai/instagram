@@ -1,21 +1,53 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/utils/color.dart';
+import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widget/follow_button.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  final String uid;
+  const Profile({super.key, required this.uid});
 
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+  var userData = {};
+  int postlenght = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    try {
+      var userSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.uid)
+          .get();
+      var postSnapshot = await FirebaseFirestore.instance
+          .collection('posts')
+          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      postlenght = postSnapshot.docs.length;
+      userData = userSnapshot.data()!;
+      setState(() {});
+      setState(() {});
+    } catch (e) {
+      showSnackBar(e.toString(), context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
-        title: Text('username'),
+        title: Text(userData['username']),
         centerTitle: false,
       ),
       body: ListView(
@@ -28,7 +60,7 @@ class _ProfileState extends State<Profile> {
                   children: [
                     CircleAvatar(
                       backgroundColor: Colors.grey,
-                      backgroundImage: NetworkImage('url'),
+                      backgroundImage: NetworkImage(userData['photoUrl']),
                       radius: 40,
                     ),
                     Expanded(
@@ -39,7 +71,7 @@ class _ProfileState extends State<Profile> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              buildStateColumn(20, 'posts'),
+                              buildStateColumn(postlenght, 'posts'),
                               buildStateColumn(150, 'follower'),
                               buildStateColumn(20, 'following'),
                             ],
@@ -58,12 +90,25 @@ class _ProfileState extends State<Profile> {
                         ],
                       ),
                     ),
-
                   ],
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Text(
+                    userData['username'],
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.only(top: 1),
+                  child: userData['bio'],
                 ),
               ],
             ),
           ),
+          const Divider(),
         ],
       ),
     );
