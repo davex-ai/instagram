@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/utils/color.dart';
+import 'package:instagram/widget/follow_button.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -32,16 +33,32 @@ class _ProfileState extends State<Profile> {
                     ),
                     Expanded(
                       flex: 1,
-                      child:
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        buildStateColumn(20, 'posts'),
-                        buildStateColumn(150, 'follower'),
-                        buildStateColumn(20, 'following')
-                      ],
-                    ),),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              buildStateColumn(20, 'posts'),
+                              buildStateColumn(150, 'follower'),
+                              buildStateColumn(20, 'following'),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              FollowButton(
+                                backgroundColor: mobileBackgroundColor,
+                                borderColor: primaryColor,
+                                text: 'Edit Profile',
+                                textColor: Colors.grey,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
                   ],
                 ),
               ],
@@ -59,15 +76,19 @@ class _ProfileState extends State<Profile> {
       children: [
         Text(
           num.toString(),
-          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         Container(
           margin: const EdgeInsets.only(top: 4),
-        child:
-        Text(
-          label,
-          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Colors.grey),
-        )),
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w400,
+              color: Colors.grey,
+            ),
+          ),
+        ),
       ],
     );
   }
