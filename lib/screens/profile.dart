@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram/logic/firestoreMethods.dart';
 import 'package:instagram/utils/color.dart';
 import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widget/follow_button.dart';
@@ -112,12 +113,26 @@ class _ProfileState extends State<Profile> {
                                             borderColor: Colors.black,
                                             text: 'Unfollow',
                                             textColor: Colors.grey,
+                                            function: () async {
+                                              await Firestoremethods().followUser(FirebaseAuth.instance.currentUser!.uid, userData['uid']);
+                                              setState(() {
+                                                isFollowing = false;
+                                                followers--;
+                                              });
+                                            },
                                           )
                                         : FollowButton(
                                             backgroundColor: Colors.blue,
                                             borderColor: Colors.blue,
                                             text: 'Follow',
                                             textColor: Colors.white,
+                                            function: () async {
+                                              await Firestoremethods().followUser(FirebaseAuth.instance.currentUser!.uid, userData['uid']);
+                                              setState(() {
+                                                isFollowing = true;
+                                                followers++;
+                                              });
+                                            },
                                           ),
                                   ],
                                 ),
