@@ -69,4 +69,8 @@ class Authentication {
     }
     return res;
   }
+
+  Future<void> logOut() async {
+    await _auth.signOut();
+  }
 }
