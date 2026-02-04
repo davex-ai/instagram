@@ -173,10 +173,10 @@ class _ProfileState extends State<Profile> {
                     if (snap.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     }
-                    return GridView(
+                    return GridView.builder(
                       shrinkWrap: true,
                       itemCount: (snap.data! as dynamic).docs.length,
-                      gridDelegate: const SilverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
                           crossAxisSpacing: 5,
                           mainAxisSpacing: 1.5,
@@ -185,8 +185,8 @@ class _ProfileState extends State<Profile> {
                         DocumentSnapshot snapshot = (snap.data! as dynamic).docs[index];
                         return Container(
                           child: Image(image: NetworkImage(snapshot['postUrl']), fit: BoxFit.cover,),
-                        )
-                    })
+                        );
+                    });
                   },
                 ),
               ],

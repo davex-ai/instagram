@@ -22,8 +22,11 @@ class _SearchState extends State<Search> {
     _search.dispose();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
@@ -79,18 +82,21 @@ class _SearchState extends State<Search> {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                return StaggeredGridView.countBuilder( //Undefined name 'StaggeredGridView'.
-                  crosssAxisCount: 3,
-                  itemCount: (snapshot.data! as dynamic).docs.lenght,
-                  itemBuilder: (context, index) => Image.network(
-                    (snapshot.data! as dynamic).docs[index]['postUrl'],
-                  ),
-                  staggeredTitleBuilder: (index) => StaggeredTile.count(
-                    (index % 7 == 0) ? 2 : 1,
-                    (index % 7 == 0) ? 2 : 1,
-                  ),
-                  mainAxisSpacing = 8,
-                  crossAxisSpacing = 8,
+                final posts = (snapshot.data! as dynamic).docs;
+                return StaggeredGrid.count(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                  children: List.generate(posts.length, (index) {
+                    return StaggeredGridTile.count(
+                      crossAxisCellCount: (index % 7 == 0) ? 2 : 1,
+                      mainAxisCellCount: (index % 7 == 0) ? 2 : 1,
+                      child: Image.network(
+                        posts[index]['postUrl'],
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }),
                 );
               },
             ),

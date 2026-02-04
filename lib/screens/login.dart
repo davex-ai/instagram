@@ -83,7 +83,7 @@ class _LoginState extends State<Login> {
                       Radius.circular(4),
                     )
                   ),
-                   color: blueColor
+                   color: Colors.blueAccent
                   ),
                 ),),
                 const SizedBox( height: 12,),

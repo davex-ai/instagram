@@ -19,7 +19,7 @@ class LikeAnimation extends StatefulWidget {
   State<LikeAnimation> createState() => _LikeAnimationState();
 }
 
-class _LikeAnimationState extends State<LikeAnimation> {
+class _LikeAnimationState extends State<LikeAnimation> with SingleTickerProviderStateMixin{
   late AnimationController controller;
   late Animation<double> scale;
 
@@ -48,7 +48,7 @@ class _LikeAnimationState extends State<LikeAnimation> {
       await Future.delayed(const Duration(milliseconds: 200));
 
       if(widget.onEnd != null) {
-        widget.onEnd();
+        widget.onEnd?.call();
       }
     }
   }
